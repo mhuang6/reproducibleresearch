@@ -1,0 +1,66 @@
+---
+title: "Reproducible Research Course Project 1"
+author: "Melrose Huang"
+date: "February 18, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+Load packages
+```{r}
+library(dplyr)
+library(ggplot2)
+```
+Import data
+```{r}
+df<-read.csv("activity.csv")
+glimpse(df)
+```
+What is the mean total number of steps taken per day?
+```{r}
+aggregate(df$steps, by=list(grp=df$date), FUN=sum, na.rm=TRUE) #Total number of steps per day
+perday<-as.data.frame(aggregate(df$steps, by=list(grp=df$date), FUN=sum, na.rm=T)) #Create data frame of table representing total # of steps per day
+glimpse(perday)
+qplot(x, data=perday, geom="histogram", xlab = "Steps per day") #Create histogram representing total number of steps per day
+mean(df$steps, na.rm=TRUE) #Mean number of steps taken per day
+median(df$steps,na.rm=TRUE) #Median number of steps taken per day
+```
+What is the average daily activity pattern?
+```{r}
+fivemin <-as.data.frame(aggregate(df$steps, by=list(grp=df$interval), FUN=mean, na.rm=T)) #Create data frame of table representing average # steps per interval
+glimpse(fivemin)
+plot(fivemin$grp, fivemin$x, xlab="Interval",
+  	ylab="Average Steps", type="o", col="blue")
+#Time series plot of 5-minute interval (x-axis) and average number of steps taken averaged across all days (y-axis)
+max_interval<-filter(fivemin, x==max(fivemin$x))
+glimpse(max_interval) #Interval with maximum number of average steps is 835.
+```
+Impute missing values
+```{r}
+summary(df) #Total number of (rows with) NAs = 2304
+df1<-df #Create new data frame, df1, that is a copy of the original, df
+df1$steps<-ifelse(is.na(df$steps), median(df$steps, na.rm=T), df$steps) #Replace NA steps value with median steps value (0) in the df1 data frame
+summary(df1) #Check imputation
+```
+Are there any differences in activity patterns between weekdays and weekends?
+```{r}
+df1$weekday<- weekdays(as.Date(df1$date))
+df1$day_type<-as.factor(ifelse((df1$weekday=="Saturday"|df1$weekday=="Sunday"), "weekend", "weekday")) #Create new factor variable w/ two levels (weekday and weekend)
+addmargins(xtabs(~weekday+day_type, df1, na.action=na.pass, exclude=NULL)) #Check new variable by running crosstabs
+
+weekdays<-filter(df1, day_type=="weekday")
+weekends<-filter(df1, day_type=="weekend")
+fivemin_weekday<-as.data.frame(aggregate(weekdays$steps, by=list(grp=weekdays$interval), FUN=mean, na.rm=T))
+fivemin_weekend<-as.data.frame(aggregate(weekends$steps, by=list(grp=weekends$interval), FUN=mean, na.rm=T))
+
+par(mfrow=c(2,1))
+plot(fivemin_weekday$grp, fivemin_weekday$x, xlab="Interval",
+  	ylab="Average Steps", type="o", col="blue")
+      title(main="Weekdays")
+plot(fivemin_weekend$grp, fivemin_weekend$x, xlab="Interval",
+  	ylab="Average Steps", type="o", col="green")
+      title(main="Weekends")
+#Make panel plot with time series plot of 5-minute interval and average # steps across all weekday days or weekend days 
+```
