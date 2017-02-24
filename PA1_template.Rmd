@@ -2,11 +2,15 @@
 title: "Reproducible Research Course Project 1"
 author: "Melrose Huang"
 date: "February 18, 2017"
-output: html_document
+output: 
+  html_document: 
+  fig_height: 5
+  fig_width: 7
+  keep_md: yes
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, results = 'hold')
 ```
 Load packages
 ```{r}
@@ -15,7 +19,7 @@ library(ggplot2)
 ```
 Import data
 ```{r}
-df<-read.csv("activity.csv")
+df<-read.csv("C:/Users/mhuang/My Documents/activity.csv")
 glimpse(df)
 ```
 What is the mean total number of steps taken per day?
