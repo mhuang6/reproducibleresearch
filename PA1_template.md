@@ -15,7 +15,7 @@ library(ggplot2)
 ```
 Import data
 ```{r}
-df<-read.csv("activity.csv")
+df<-read.csv("C:/Users/mhuang/My Documents/activity.csv")
 glimpse(df)
 ```
 What is the mean total number of steps taken per day?
