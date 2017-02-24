@@ -4,9 +4,7 @@ author: "Melrose Huang"
 date: "February 18, 2017"
 output: 
   html_document: 
-  fig_height: 5
-  fig_width: 7
-  keep_md: yes
+    keep_md: yes
 ---
 
 ```{r setup, include=FALSE}
