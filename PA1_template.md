@@ -2,10 +2,6 @@
 Melrose Huang  
 February 18, 2017  
 
-**********************************************************************************************
-PLEASE CHECK MY PDF FILE (PA1_Template.pdf) TO VIEW GRAPHS AND ANSWERS TO HOMEWORK ASSIGNMENT.
-I AM EXPERIENCING TECHNICAL DIFFICULTIES RENDERING A .MD FILE THAT SHOWS THE GRAPHS EVEN AFTER VISITING THE WEEK 2 DISCUSSION FORUM FOR HELP.
-**********************************************************************************************
 
 Load packages
 
@@ -53,7 +49,8 @@ What is the mean total number of steps taken per day?
 aggregate(df$steps, by=list(grp=df$date), FUN=sum, na.rm=TRUE) #Total number of steps per day
 perday<-as.data.frame(aggregate(df$steps, by=list(grp=df$date), FUN=sum, na.rm=T)) #Create data frame of table representing total # of steps per day
 glimpse(perday)
-qplot(x, data=perday, geom="histogram", xlab = "Steps per day") #Create histogram representing total number of steps per day
+m <- ggplot(perday, aes(x=x))
+m + geom_histogram() + xlab("Steps per day")
 ```
 
 ```
@@ -142,8 +139,8 @@ What is the average daily activity pattern?
 ```r
 fivemin <-as.data.frame(aggregate(df$steps, by=list(grp=df$interval), FUN=mean, na.rm=T)) #Create data frame of table representing average # steps per interval
 glimpse(fivemin)
-plot(fivemin$grp, fivemin$x, xlab="Interval",
-  	ylab="Average Steps", type="o", col="blue")
+ggplot(data=fivemin, aes(x=grp,y=x)) +
+    geom_line() + xlab("Interval") + ylab("Average Steps")
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
@@ -205,10 +202,10 @@ fivemin_weekend<-as.data.frame(aggregate(weekends$steps, by=list(grp=weekends$in
 
 par(mfrow=c(2,1))
 plot(fivemin_weekday$grp, fivemin_weekday$x, xlab="Interval",
-  	ylab="Average Steps", type="o", col="blue")
+    ylab="Average Steps", type="o", col="blue")
       title(main="Weekdays")
 plot(fivemin_weekend$grp, fivemin_weekend$x, xlab="Interval",
-  	ylab="Average Steps", type="o", col="green")
+    ylab="Average Steps", type="o", col="green")
       title(main="Weekends")
 ```
 

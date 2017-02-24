@@ -25,7 +25,8 @@ What is the mean total number of steps taken per day?
 aggregate(df$steps, by=list(grp=df$date), FUN=sum, na.rm=TRUE) #Total number of steps per day
 perday<-as.data.frame(aggregate(df$steps, by=list(grp=df$date), FUN=sum, na.rm=T)) #Create data frame of table representing total # of steps per day
 glimpse(perday)
-qplot(x, data=perday, geom="histogram", xlab = "Steps per day") #Create histogram representing total number of steps per day
+m <- ggplot(perday, aes(x=x))
+m + geom_histogram() + xlab("Steps per day")
 mean(df$steps, na.rm=TRUE) #Mean number of steps taken per day
 median(df$steps,na.rm=TRUE) #Median number of steps taken per day
 ```
@@ -33,8 +34,8 @@ What is the average daily activity pattern?
 ```{r}
 fivemin <-as.data.frame(aggregate(df$steps, by=list(grp=df$interval), FUN=mean, na.rm=T)) #Create data frame of table representing average # steps per interval
 glimpse(fivemin)
-plot(fivemin$grp, fivemin$x, xlab="Interval",
-  	ylab="Average Steps", type="o", col="blue")
+ggplot(data=fivemin, aes(x=grp,y=x)) +
+    geom_line() + xlab("Interval") + ylab("Average Steps")
 #Time series plot of 5-minute interval (x-axis) and average number of steps taken averaged across all days (y-axis)
 max_interval<-filter(fivemin, x==max(fivemin$x))
 glimpse(max_interval) #Interval with maximum number of average steps is 835.
@@ -59,10 +60,10 @@ fivemin_weekend<-as.data.frame(aggregate(weekends$steps, by=list(grp=weekends$in
 
 par(mfrow=c(2,1))
 plot(fivemin_weekday$grp, fivemin_weekday$x, xlab="Interval",
-  	ylab="Average Steps", type="o", col="blue")
+    ylab="Average Steps", type="o", col="blue")
       title(main="Weekdays")
 plot(fivemin_weekend$grp, fivemin_weekend$x, xlab="Interval",
-  	ylab="Average Steps", type="o", col="green")
+    ylab="Average Steps", type="o", col="green")
       title(main="Weekends")
 #Make panel plot with time series plot of 5-minute interval and average # steps across all weekday days or weekend days 
 ```
