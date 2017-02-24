@@ -2,6 +2,10 @@
 Melrose Huang  
 February 18, 2017  
 
+**********************************************************************************************
+PLEASE CHECK MY PDF FILE (PA1_Template.pdf) TO VIEW GRAPHS AND ANSWERS TO HOMEWORK ASSIGNMENT.
+I AM EXPERIENCING TECHNICAL DIFFICULTIES RENDERING A .MD FILE THAT SHOWS THE GRAPHS EVEN AFTER VISITING THE WEEK 2 DISCUSSION FORUM FOR HELP.
+**********************************************************************************************
 
 Load packages
 
